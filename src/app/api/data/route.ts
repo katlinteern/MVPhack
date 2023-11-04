@@ -1,11 +1,10 @@
-import { NextResponse } from 'next/server'
 import { getData } from "@/app/api/data/parse_data";
-import { NextApiRequest } from "next";
 import { CountryData } from "@/app/api/data/types";
 import { getNumericCodes } from "i18n-iso-countries";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: NextApiRequest) {
-  const { query: { is_dummy: isDummy}} = request;
+export function GET(request: NextRequest) {
+  const isDummy = request.nextUrl.searchParams.get('is_dummy');
 
   if (!isDummy) {
     return NextResponse.json(getData());
@@ -35,6 +34,7 @@ export async function GET(request: NextApiRequest) {
       resp[key] = countryData
     }
   )
+
   return NextResponse.json(resp);
 }
 
