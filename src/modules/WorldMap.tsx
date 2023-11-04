@@ -36,7 +36,6 @@ const WorldMap = () => {
         scale: 147
       }}>
         {/*@ts-ignore */}
-        <Sphere stroke="#E4E5E6" strokeWidth={0.5}/>
         <Geographies geography={geoJson}>
           {({ geographies }) =>
             geographies.map((geo) => {
@@ -48,6 +47,7 @@ const WorldMap = () => {
               return (<Geography
                   key={geo.rsmKey}
                   geography={geo}
+                  className="Geography"
                   fill={dataPoint ? colorScale(dataPoint) : "#85868a"}
                 />
               )})
