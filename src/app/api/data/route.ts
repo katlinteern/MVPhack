@@ -1,16 +1,25 @@
 import { NextResponse } from 'next/server'
-import { getNumericCodes } from 'i18n-iso-countries';
+import { getData } from "@/app/api/data/parse_data";
+import { NextApiRequest } from "next";
 import { CountryData } from "@/app/api/data/types";
+import { getNumericCodes } from "i18n-iso-countries";
 
-export async function GET( /* request, context: { params }*/ ) {
+export async function GET(request: NextApiRequest) {
+  const { query: { is_dummy: isDummy}} = request;
+
+  if (!isDummy) {
+    return NextResponse.json(getData());
+  }
+
   const countries = getNumericCodes();
   const resp: any = {};
   const years: number[] = Array.from(new Array(27), (_, i) => i+1997);
 
   Object.keys(countries).forEach((key) => {
-      const countryData: CountryData = {
-        iso2: countries[key],
-        iso3a: key,
+    const countryData: CountryData = {
+      iso2: countries[key],
+      // @ts-ignore
+      iso3a: key,
       }
       const data: any = {};
       years.forEach((year) => {

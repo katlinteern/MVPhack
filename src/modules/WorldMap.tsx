@@ -13,7 +13,7 @@ const colorScale: (datapoint: number) => string = scaleLinear()
 
 const WorldMap = () => {
   const [countries, setCountries] = useState<CountryData[]>([]);
-  const [year, setYear] = useState<string>('2023');
+  const [year, setYear] = useState<string>('2020');
   const [dataKey, setDataKey] = useState<DataPointType>('gdp');
 
   useEffect(() => {
@@ -41,6 +41,7 @@ const WorldMap = () => {
           {({ geographies }) =>
             geographies.map((geo) => {
               const countryData = countries[geo.id];
+              console.log(countryData);
               // @ts-ignore
               const dataPoint: number = countryData && countryData.data && countryData.data[year] && countryData.data[year][dataKey];
 
