@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 
 const colorScale = scaleLinear()
   .domain([0, 5000])
+  // @ts-ignore
   .range(["#ffedea", "#ff5233"]);
 
 export default function Home() {
@@ -33,6 +34,7 @@ export default function Home() {
         rotate: [-10, 0, 0],
         scale: 147
       }}>
+        {/*@ts-ignore */}
         <Sphere stroke="#E4E5E6" strokeWidth={0.5}/>
         <Geographies geography={geoJson}>
           {({ geographies }) =>
@@ -43,6 +45,7 @@ export default function Home() {
               return (<Geography
                   key={geo.rsmKey}
                   geography={geo}
+                  {/*@ts-ignore */}
                   fill={d ? colorScale(d['gdp']) : "#F5F4F6"}
                 />
               )})
