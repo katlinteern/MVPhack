@@ -1,14 +1,15 @@
 import { NextResponse } from 'next/server'
-import { getAlpha2Codes } from 'i18n-iso-countries';
+import { getNumericCodes } from 'i18n-iso-countries';
 
 export async function GET( /* request, context: { params }*/ ) {
-  const countries = getAlpha2Codes();
+  const countries = getNumericCodes();
   const resp = [];
 
   Object.keys(countries).forEach((key) => {
     resp.push({
-      iso: key,
+      iso: countries[key],
       gdp: getRandomInt(5000),
+      iso3a: key
     })
     }
   )
