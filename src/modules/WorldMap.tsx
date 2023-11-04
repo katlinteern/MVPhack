@@ -8,7 +8,7 @@ import { CountryData, DataPointType } from "@/app/api/data/types";
 const colorScale = scaleLinear()
   .domain([0, 5000])
   // @ts-ignore
-  .range(["#ffedea", "#112dba"]);
+  .range(["#86CEFA", "#003396"]);
 
 const WorldMap = () => {
   const [countries, setCountries] = useState<CountryData[]>([]);
