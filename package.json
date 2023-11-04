@@ -10,12 +10,17 @@
   },
   "dependencies": {
     "convert-csv-to-json": "^2.0.0",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.16",
+    "@mui/material": "^5.14.16",
     "d3-scale": "^4.0.2",
     "i18n-iso-countries": "^7.7.0",
     "next": "14.0.1",
     "react": "^18",
     "react-dom": "^18",
-    "react-simple-maps": "^3.0.0"
+    "react-simple-maps": "^3.0.0",
+    "styled-components": "^6.1.0"
   },
   "devDependencies": {
     "@types/d3-scale": "^4.0.6",
