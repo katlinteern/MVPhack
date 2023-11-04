@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 const colorScale = scaleLinear()
   .domain([0, 5000])
   // @ts-ignore
-  .range(["#ffedea", "#ff5233"]);
+  .range(["#86CEFA", "#003396"]);
 
 const WorldMap = () => {
   const [data, setData] = useState([]);
