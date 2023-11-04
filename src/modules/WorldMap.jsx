@@ -32,19 +32,21 @@ const WorldMap = () => {
         scale: 147
       }}>
         {/*@ts-ignore */}
-        <Sphere stroke="#E4E5E6" strokeWidth={0.5}/>
         <Geographies geography={geoJson}>
           {({ geographies }) =>
             geographies.map((geo) => {
-              // @ts-ignore
               const d = data.find((s) => s.iso3a == geo.id);
 
-              return (<Geography
+              return (
+                <Geography
                   key={geo.rsmKey}
                   geography={geo}
-                  fill={d ? colorScale(d['gdp']) : "#F5F4F6"}
+                  fill={d ? colorScale(d.gdp) : '#F5F4F6'}
+                  className="Geography"
+                  onClick={() => handleCountryClick(geo)}
                 />
-              )})
+              );
+            })
           }
         </Geographies>
       </ComposableMap>

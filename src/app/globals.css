@@ -18,3 +18,7 @@
 
 body {
 }
+
+.Geography:hover {
+  fill: #ffa500; 
+}
