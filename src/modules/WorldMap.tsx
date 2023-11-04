@@ -3,26 +3,29 @@ import { ComposableMap, Geographies, Geography, Sphere } from 'react-simple-maps
 import geoJson from './countries-110m.json';
 import { scaleLinear } from 'd3-scale';
 import { useEffect, useState } from "react";
+import { CountryData, DataPointType } from "@/app/api/data/types";
 
 const colorScale = scaleLinear()
   .domain([0, 5000])
   // @ts-ignore
-  .range(["#ffedea", "#ff5233"]);
+  .range(["#ffedea", "#112dba"]);
 
 const WorldMap = () => {
-  const [data, setData] = useState([]);
+  const [countries, setCountries] = useState<CountryData[]>([]);
+  const [year, setYear] = useState<string>('2023');
+  const [dataKey, setDataKey] = useState<DataPointType>('gdp');
 
   useEffect(() => {
     (
       async () => {
         const apiResponse = await fetch('./api/data');
         const jsonData = await apiResponse.json();
-        setData(jsonData);
+        setCountries(jsonData);
       }
     )()
   }, [])
 
-  if (!data) {
+  if (!countries) {
     return <div>Loading...</div>
   }
 
@@ -36,13 +39,15 @@ const WorldMap = () => {
         <Geographies geography={geoJson}>
           {({ geographies }) =>
             geographies.map((geo) => {
+              const countryData = countries[geo.id];
               // @ts-ignore
-              const d = data.find((s) => s.iso3a == geo.id);
+              const dataPoint: number = countryData && countryData.data && countryData.data[year] && countryData.data[year][dataKey];
 
+              // @ts-ignore
               return (<Geography
                   key={geo.rsmKey}
                   geography={geo}
-                  fill={d ? colorScale(d['gdp']) : "#F5F4F6"}
+                  fill={dataPoint ? colorScale(dataPoint) : "#85868a"}
                 />
               )})
           }
