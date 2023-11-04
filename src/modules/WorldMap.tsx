@@ -4,6 +4,7 @@ import geoJson from './countries-110m.json';
 import { scaleLinear } from 'd3-scale';
 import { useEffect, useState } from "react";
 import { CountryData, DataPointType } from "@/app/api/data/types";
+import YearSlider from '@/app/components/YearSlider';
 
 // @ts-ignore
 const colorScale: (datapoint: number) => string = scaleLinear()
@@ -13,8 +14,15 @@ const colorScale: (datapoint: number) => string = scaleLinear()
 
 const WorldMap = () => {
   const [countries, setCountries] = useState<CountryData[]>([]);
-  const [year, setYear] = useState<string>('2023');
+  const [year, setYear] = useState<number>(2023);
   const [dataKey, setDataKey] = useState<DataPointType>('gdp');
+
+  const minYear = 2000;
+  const maxYear = 2030;
+
+  const handleYearChange = (newYear: number) => {
+    setYear(newYear);
+  };
 
   useEffect(() => {
     (
@@ -31,28 +39,37 @@ const WorldMap = () => {
   }
 
   return (
-      <ComposableMap projectionConfig={{
-        rotate: [-10, 0, 0],
-        scale: 147
-      }}>
-        {/*@ts-ignore */}
-        <Geographies geography={geoJson}>
-          {({ geographies }) =>
-            geographies.map((geo) => {
-              const countryData = countries[geo.id];
-              // @ts-ignore
-              const dataPoint: number = countryData && countryData.data && countryData.data[year] && countryData.data[year][dataKey];
+    <div className="container">
+        <YearSlider
+          minYear={minYear}
+          maxYear={maxYear}
+          selectedYear={year}
+          onYearChange={handleYearChange}
+        />
+   
+        <ComposableMap projectionConfig={{
+          rotate: [-10, 0, 0],
+          scale: 147
+        }}>
+          {/*@ts-ignore */}
+          <Geographies geography={geoJson}>
+            {({ geographies }) =>
+              geographies.map((geo) => {
+                const countryData = countries[geo.id];
+                // @ts-ignore
+                const dataPoint: number = countryData && countryData.data && countryData.data[year] && countryData.data[year][dataKey];
 
-              return (<Geography
-                  key={geo.rsmKey}
-                  geography={geo}
-                  className="Geography"
-                  fill={dataPoint ? colorScale(dataPoint) : "#85868a"}
-                />
-              )})
-          }
-        </Geographies>
-      </ComposableMap>
+                return (<Geography
+                    key={geo.rsmKey}
+                    geography={geo}
+                    className="Geography"
+                    fill={dataPoint ? colorScale(dataPoint) : "#85868a"}
+                  />
+                )})
+            }
+          </Geographies>
+        </ComposableMap>
+      </div>
   )
 }
 
