@@ -5,7 +5,8 @@ import { scaleLinear } from 'd3-scale';
 import { useEffect, useState } from "react";
 import { CountryData, DataPointType } from "@/app/api/data/types";
 
-const colorScale = scaleLinear()
+// @ts-ignore
+const colorScale: (datapoint: number) => string = scaleLinear()
   .domain([0, 5000])
   // @ts-ignore
   .range(["#86CEFA", "#003396"]);
@@ -43,7 +44,6 @@ const WorldMap = () => {
               // @ts-ignore
               const dataPoint: number = countryData && countryData.data && countryData.data[year] && countryData.data[year][dataKey];
 
-              // @ts-ignore
               return (<Geography
                   key={geo.rsmKey}
                   geography={geo}
