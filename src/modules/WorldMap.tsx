@@ -4,6 +4,8 @@ import geoJson from './countries-110m.json';
 import { scaleLinear } from 'd3-scale';
 import { useEffect, useState } from "react";
 import { CountryData, DataPointType } from "@/app/api/data/types";
+import YearSlider from '@/app/components/YearSlider';
+import Dropdown from '@/app/components/Dropdown';
 
 // @ts-ignore
 const colorScale: (datapoint: number) => string = scaleLinear()
@@ -11,9 +13,35 @@ const colorScale: (datapoint: number) => string = scaleLinear()
   // @ts-ignore
   .range(["#86CEFA", "#003396"]);
 
-const WorldMap = ({ year }: { year: number }) => {
+const WorldMap = () => {
   const [countries, setCountries] = useState<CountryData[]>([]);
+  const [year, setYear] = useState<number>(2020);
   const [dataKey, setDataKey] = useState<DataPointType>('gdp');
+
+  const minYear = 1998;
+  const maxYear = 2023;
+
+  //TODO find out what options are really needed
+  const options = [
+    { value: 'option1', label: 'Option 1' },
+    { value: 'option2', label: 'Option 2' },
+    { value: 'option3', label: 'Option 3' },
+  ];
+
+  const handleYearChange = (newYear: number) => {    
+    setYear(newYear);
+  };
+
+  //TODO solve together with real option values
+  const handleOptionChange = () => {
+      //setDataKey(dataKey);
+  };
+
+  //TODO onclick function
+  const handleMapClick = (event: React.MouseEvent<SVGPathElement>) => {
+    const geography = event.currentTarget;
+    console.log('Clicked:', geography);
+  };
 
   useEffect(() => {
     (
@@ -30,6 +58,20 @@ const WorldMap = ({ year }: { year: number }) => {
   }
 
   return (
+    <>
+      <div className="SearchContainer">
+        <YearSlider
+          minYear={minYear}
+          maxYear={maxYear}
+          selectedYear={year}
+          onYearChange={handleYearChange}
+        />
+        <Dropdown
+          options={options}
+          selectedOption={dataKey}
+          onOptionChange={handleOptionChange}
+        />
+      </div>
       <ComposableMap projectionConfig={{
         rotate: [-10, 0, 0],
         scale: 147
@@ -44,15 +86,23 @@ const WorldMap = ({ year }: { year: number }) => {
               const dataPoint: number = countryData && countryData.data && countryData.data[year] && countryData.data[year][dataKey];
 
               return (<Geography
-                  key={geo.rsmKey}
-                  geography={geo}
-                  className="Geography"
-                  fill={dataPoint ? colorScale(dataPoint) : "#85868a"}
-                />
-              )})
+                style={{
+                  default: { outline: "none" },
+                  hover: { outline: "none" },
+                  pressed: { outline: "none" },
+                }}
+                key={geo.rsmKey}
+                geography={geo}
+                className="Geography"
+                fill={dataPoint ? colorScale(dataPoint) : "#85868a"}
+                onClick={handleMapClick}
+              />
+              )
+            })
           }
         </Geographies>
       </ComposableMap>
+    </>
   )
 }
 

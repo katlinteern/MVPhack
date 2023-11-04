@@ -22,3 +22,48 @@ body {
 .Geography:hover {
   fill: #ffa500; 
 }
+
+.SearchContainer {
+  width: 100%;
+  padding: 10px;
+  background-color: #f2f2f2;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin-top: 50px;
+}
+
+.YearLabel {
+  font-size: 15px;
+  margin-left: 200px;
+}
+
+.Year {
+  font-size: 15px;
+}
+
+.Dropdown {
+  padding: 10px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border 0.3s;
+  width: 23%; 
+  margin-left: 30px;
+  margin-right: 200px;
+
+  &:hover {
+    border-color: #007bff;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+}
