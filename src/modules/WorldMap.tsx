@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { CountryData, DataPointType } from "@/app/api/data/types";
 import YearSlider from '@/app/components/YearSlider';
 import Dropdown from '@/app/components/Dropdown';
+import Modal from '@/app/components/Modal';
 
 // @ts-ignore
 const colorScale: (datapoint: number) => string = scaleLinear()
@@ -28,19 +29,31 @@ const WorldMap = () => {
     { value: 'option3', label: 'Option 3' },
   ];
 
-  const handleYearChange = (newYear: number) => {    
+  const handleYearChange = (newYear: number) => {
     setYear(newYear);
   };
 
   //TODO solve together with real option values
   const handleOptionChange = () => {
-      //setDataKey(dataKey);
+    //setDataKey(dataKey);
   };
 
   //TODO onclick function
   const handleMapClick = (event: React.MouseEvent<SVGPathElement>) => {
-    const geography = event.currentTarget;
-    console.log('Clicked:', geography);
+    // const geography = event.currentTarget;
+    // console.log('Clicked:', geography);
+    closeModal();
+    openModal();
+  };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   useEffect(() => {
@@ -102,6 +115,9 @@ const WorldMap = () => {
           }
         </Geographies>
       </ComposableMap>
+      <Modal isOpen={isModalOpen} onClose={closeModal} title="Country name">
+        <p>Country data</p>
+      </Modal>
     </>
   )
 }
