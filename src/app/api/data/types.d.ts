@@ -8,7 +8,8 @@ export interface CountryData {
       }
       [dataPoint: DataPointType]: ?number,
     }
-  }
+  },
+  name: string,
 }
 
 export type DataPointType = 'gdp' | 'crop' | 'ara' | 'emigrants' | 'immigrationTo';

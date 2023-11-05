@@ -1,6 +1,6 @@
 // @ts-ignore
 import { CountryData } from "@/app/api/data/types";
-import { alpha2ToNumeric } from "i18n-iso-countries";
+import { alpha2ToNumeric, getName } from "i18n-iso-countries";
 
 let parsedData: any;
 
@@ -42,6 +42,7 @@ export function getData() {
       data: {},
       iso2: prev_res_cd,
       iso3a: cc,
+      name: getName(cc, 'en'),
     };
 
     const yearData = (country.data && country.data[''+year]) ? country.data[''+year] : {
