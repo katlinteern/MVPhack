@@ -8,40 +8,52 @@ import YearSlider from '@/app/components/YearSlider';
 import Dropdown from '@/app/components/Dropdown';
 import Modal from '@/app/components/Modal';
 
-// @ts-ignore
-const colorScale: (datapoint: number) => string = scaleLinear()
-  .domain([0, 5000])
-  // @ts-ignore
-  .range(["#86CEFA", "#003396"]);
+
 
 const WorldMap = () => {
   const [countries, setCountries] = useState<CountryData[]>([]);
   const [year, setYear] = useState<number>(2020);
   const [dataKey, setDataKey] = useState<DataPointType>('gdp');
-
+  const [maxScale, setMaxScale ] = useState<number>(10000);
+  const [geoId, setGeoId] = useState<number>(1);
   const minYear = 1998;
   const maxYear = 2023;
 
+  // @ts-ignore
+  const colorScale: (datapoint: number) => string = scaleLinear()
+    .domain([0, maxScale])
+    // @ts-ignore
+    .range(["#86CEFA", "#003396"]);
+
   //TODO find out what options are really needed
   const options = [
-    { value: 'option1', label: 'Option 1' },
-    { value: 'option2', label: 'Option 2' },
-    { value: 'option3', label: 'Option 3' },
+    { value: 'gdp', label: 'GDP' },
+    { value: 'crop', label: 'Crop' },
+    { value: 'ara', label: 'Arable area' },
+    { value: 'emigrants', label: 'Number of emigrants' },
   ];
+  const maxValues = {
+    gdp: 10000,
+    crop: 8.25,
+    ara: 9.1,
+    emigrants: 1100000,
+  }
 
   const handleYearChange = (newYear: number) => {
     setYear(newYear);
   };
 
-  //TODO solve together with real option values
-  const handleOptionChange = () => {
-    //setDataKey(dataKey);
+  const handleOptionChange = (dataKey: string) => {
+    setDataKey(dataKey as DataPointType);
+    // @ts-ignore
+    setMaxScale(maxValues[dataKey])
   };
 
   //TODO onclick function
-  const handleMapClick = (event: React.MouseEvent<SVGPathElement>) => {
+  const handleMapClick = (geoId: number) => {
     // const geography = event.currentTarget;
     // console.log('Clicked:', geography);
+    setGeoId(geoId);
     closeModal();
     openModal();
   };
@@ -108,18 +120,33 @@ const WorldMap = () => {
                 geography={geo}
                 className="Geography"
                 fill={dataPoint ? colorScale(dataPoint) : "#85868a"}
-                onClick={handleMapClick}
+                onClick={() => handleMapClick(geo.id)}
               />
               )
             })
           }
         </Geographies>
       </ComposableMap>
-      <Modal isOpen={isModalOpen} onClose={closeModal} title="Country name">
-        <p>Country data</p>
+      <Modal isOpen={isModalOpen} onClose={closeModal} title={geoId && countries[geoId] && countries[geoId].name ? countries[geoId].name : 'Data'}>
+        {
+          // @ts-ignore
+          geoId && countries[geoId] && (<CountryModalData data={countries[geoId].data[year]}/>)
+        }
       </Modal>
     </>
   )
+}
+
+const CountryModalData = (data: CountryData) => {
+  const d = data.data as any ?? {};
+
+  return (<div>
+    <p>GDP: {d.gdp || ''}</p>
+    <p>ARA: {d.ara  || ''}</p>
+    <p>CROP: {d.crop  || ''}</p>
+    <p>Emigrants: {d.emigrants || ''}</p>
+    <p>Emigration by country:{JSON.stringify(d.immigrationTo)}</p>
+  </div>);
 }
 
 export default WorldMap;

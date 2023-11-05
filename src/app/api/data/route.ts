@@ -1,6 +1,6 @@
 import { getData } from "@/app/api/data/parse_data";
 import { CountryData } from "@/app/api/data/types";
-import { getNumericCodes } from "i18n-iso-countries";
+import { getName, getNumericCodes } from "i18n-iso-countries";
 import { NextRequest, NextResponse } from "next/server";
 
 export function GET(request: NextRequest) {
@@ -19,6 +19,7 @@ export function GET(request: NextRequest) {
       iso2: countries[key],
       // @ts-ignore
       iso3a: key,
+      name: getName(key, 'en') || '',
       }
       const data: any = {};
       years.forEach((year) => {
